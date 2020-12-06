@@ -1,0 +1,10 @@
+# Directories
+.vs/
+
+# Binaries
+**/bin/
+!vendor/premake/bin/
+bin-int/
+
+#Files
+*.user
