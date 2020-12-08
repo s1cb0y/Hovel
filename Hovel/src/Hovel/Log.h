@@ -1,11 +1,12 @@
 #pragma once
 #include "Core.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h" // enable proprietary type logging
 #include <memory>
 
 namespace Hovel {
 	
-	class HV_API Log
+	class HOVEL_API Log
 	{
 	public:
 		static void Init();

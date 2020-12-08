@@ -1,8 +1,8 @@
 #pragma once
 #include "Core.h"
-
+#include "Events/Event.h"
 namespace Hovel {
-	class HV_API Application
+	class HOVEL_API Application
 	{
 	public:
 		Application();
