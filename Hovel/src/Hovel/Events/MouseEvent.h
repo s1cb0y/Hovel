@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Hovel/Events/Event.h"
-#include <sstream>
 
 namespace Hovel
 {

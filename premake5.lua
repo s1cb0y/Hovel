@@ -18,6 +18,9 @@ project "Hovel"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "hvpch.h"
+	pchsource "Hovel/src/hvpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",

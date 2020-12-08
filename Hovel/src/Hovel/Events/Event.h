@@ -1,7 +1,6 @@
 #pragma once
+#include "hvpch.h"
 #include "Hovel/Core.h"
-#include <string>
-#include <functional>
 
 namespace Hovel {
 

@@ -1,3 +1,4 @@
+#include "hvpch.h"
 #include "Application.h"
 #include "Hovel/Events/ApplicationEvent.h"
 #include "Hovel/Log.h"
