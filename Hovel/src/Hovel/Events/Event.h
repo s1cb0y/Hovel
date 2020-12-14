@@ -51,7 +51,7 @@ namespace Hovel {
 	class EventDispatcher 
 	{
 		template<typename T>
-		using EventFn = std::function<bool>(T&);
+		using EventFn = std::function<bool(T&)>;
 	public:
 		EventDispatcher(Event& e)
 			: m_Event( e ) {}
@@ -61,7 +61,7 @@ namespace Hovel {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType()) 
 			{
-				m_Event.m_handled = func(*(T*)&m_Event); // TODO: Understand this function call
+				m_Event.m_Handled = func(*(T*)&m_Event); // TODO: Understand this function call
 				return true;
 			}
 			return false;
@@ -70,7 +70,8 @@ namespace Hovel {
 		Event& m_Event;
 	};
 
-	inline std::ostream& operator << (std::ostream& os, const Event &e) {
+	inline std::ostream& operator << (std::ostream& os, const Event &e) 
+	{
 		return os << e.ToString();
 	}
 

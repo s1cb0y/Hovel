@@ -6,5 +6,9 @@
 !vendor/premake/bin/
 bin-int/
 
-#Files
-*.user
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
