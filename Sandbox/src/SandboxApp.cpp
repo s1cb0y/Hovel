@@ -1,12 +1,36 @@
 #include <Hovel.h>
 
-class Sandbox : public Hovel::Application {
+class ExampleLayer : public Hovel::Layer
+{
 public:
-	Sandbox() {
+	ExampleLayer()
+		: Layer("Example") {}
+
+	~ExampleLayer()
+	{
+	}
+	void OnUpdate() override
+	{
+		HV_INFO("ExampleLayer::Update");
 	}
 
-	~Sandbox() {
+	void OnEvent(Hovel::Event& e) override
+	{	
+		HV_TRACE("ExampleLayer, {0}", e.GetName());
 	}
+};
+
+class Sandbox : public Hovel::Application {
+public:
+	Sandbox() 
+	{
+		PushLayer(new ExampleLayer());
+	}
+
+	~Sandbox()
+	{
+	}
+		
 };
 
 Hovel::Application* Hovel::CreateApplication() {

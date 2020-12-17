@@ -64,14 +64,17 @@ project "Hovel"
     
     filter "configurations:Debug"
         defines "HV_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "HV_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "HV_DIST"
+        buildoptions "/MD"
         optimize "On"
 
 
@@ -111,12 +114,15 @@ project "Sandbox"
 
     filter "configurations:Debug"
         defines "HV_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "HV_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "HV_DIST"
+        buildoptions "/MD"
         optimize "On"

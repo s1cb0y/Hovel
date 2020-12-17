@@ -21,7 +21,12 @@ namespace Hovel {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		HV_CORE_TRACE("{0}", e);
+		for (auto it = m_layerStack.end(); it != m_layerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
 	}
 	void Application::Run() {	
 		
@@ -30,9 +35,22 @@ namespace Hovel {
 		{
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+			for (Layer* layer : m_layerStack)
+				layer->OnUpdate();
+			
 			m_window->OnUpdate();
 		}
-	}	   	 
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_layerStack.PushLayer(layer);
+	}
+
+	void Application::PopLayer(Layer* layer)
+	{
+		m_layerStack.PopLayer(layer);
+	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
