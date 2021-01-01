@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hovel/vendor/GLFW/include"
+IncludeDir["Glad"] = "Hovel/vendor/Glad/include"
 
 include "Hovel/vendor/GLFW"
+include "Hovel/vendor/Glad"
 
 project "Hovel"
     location "Hovel"
@@ -37,12 +39,14 @@ project "Hovel"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}"
     } 
 
     links
     {
         "GLFW",
+        "Glad",
         "opengl32.lib"
     }
 
@@ -54,7 +58,8 @@ project "Hovel"
         defines 
         {
             "HV_PLATFORM_WINDOWS",
-            "HV_BUILD_DLL"
+            "HV_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands

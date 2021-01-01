@@ -5,9 +5,12 @@
 #include "Hovel/Events/KeyEvent.h"
 #include "Hovel/Events/ApplicationEvent.h"
 
+#include "glad/glad.h"
+
 namespace Hovel
 {
 	static bool s_GLFWInitialized = false;
+
 	static void GLFWErrorCallback(int errorcode, const char* msg)
 	{
 		HV_CORE_ERROR("GLFW Error ({0}) : {1}", errorcode, msg);
@@ -44,6 +47,9 @@ namespace Hovel
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		// Init glad
+		int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+		HV_ASSERT(status, "Failed to init Glad!");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 	
 		SetVSync(true);

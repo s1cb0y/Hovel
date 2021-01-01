@@ -1,6 +1,7 @@
 #pragma once
 #include "Hovel/Window.h"
 #include "GLFW/glfw3.h"
+
 namespace Hovel 
 {
 	class WindowsWindow : public Window
