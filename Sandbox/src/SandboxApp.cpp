@@ -11,7 +11,7 @@ public:
 	}
 	void OnUpdate() override
 	{
-		HV_INFO("ExampleLayer::Update");
+		//HV_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Hovel::Event& e) override
@@ -25,6 +25,7 @@ public:
 	Sandbox() 
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Hovel::ImGuiLayer());
 	}
 
 	~Sandbox()

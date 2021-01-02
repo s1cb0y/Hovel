@@ -5,6 +5,8 @@
 #include "Hovel/Layer.h"
 #include "Hovel/Log.h"
 
+#include "Hovel/ImGui/ImGuiLayer.h"
+
 // ----- Entry Point -------------
 #include "Hovel/EntryPoint.h"
 // --------------------------------

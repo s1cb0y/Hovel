@@ -7,3 +7,6 @@
 [submodule "Hovel/vendor/GLFW"]
 	path = Hovel/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule ".\\Hovel\\vendor\\imgui"]
+	path = .\\Hovel\\vendor\\imgui
+	url = https://github.com/TheCherno/imgui

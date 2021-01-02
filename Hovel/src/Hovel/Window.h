@@ -12,7 +12,7 @@ namespace Hovel
 		unsigned int Height;
 		unsigned int Width;
 
-		WindowProps(const std::string title = "Hovel Engine", 
+		WindowProps(const std::string& title = "Hovel Engine", 
 					unsigned int w = 1280, 
 					unsigned int h = 720)
 			: Height{h}, Width{w}, Title{title}
