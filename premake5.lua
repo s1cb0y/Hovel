@@ -78,12 +78,12 @@ project "Hovel"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
+		defines "HV_RELEASE"
 		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
-		defines "HZ_DIST"
+		defines "HV_DIST"
 		runtime "Release"
 		optimize "On"
 
