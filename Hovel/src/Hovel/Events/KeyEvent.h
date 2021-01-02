@@ -6,7 +6,7 @@ namespace Hovel{
 	class HOVEL_API KeyEvent : public Event 
 	{
 	public:
-		inline int GetKeyCode() { return m_KeyCode; }
+		inline int GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard |EventCategoryInput)
 	protected:
@@ -20,12 +20,12 @@ namespace Hovel{
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_repeatCount{ repeatCount } 
+			: KeyEvent(keycode), m_repeatCount(repeatCount) {}
+
+		inline int GetRepeatCount() const { return m_repeatCount; }
+
+		std::string ToString() const override
 		{
-		}
-		
-		virtual std::string ToString() const override 
-		{ 
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_repeatCount << " repeats)";
 			return ss.str(); 
@@ -49,5 +49,20 @@ namespace Hovel{
 		}
 		
 		EVENT_CLASS_TYPE(KeyReleased)	
+	};
+	class HOVEL_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode)
+			: KeyEvent(keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
 	};
 }

@@ -12,7 +12,7 @@ namespace Hovel{
 		virtual ~Layer() = 0;
 
 		virtual void OnAttach() {};
-		virtual void OnDetatch() {};
+		virtual void OnDetach() {};
 		virtual void OnUpdate() {};
 		virtual void OnEvent(Event& event) {};
 

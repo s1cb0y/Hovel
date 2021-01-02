@@ -19,3 +19,5 @@
 	#define HV_CORE_ASSERT(x, ...)	
 	#define HV_ASSERT(x, ...)	
 #endif
+
+#define HV_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)

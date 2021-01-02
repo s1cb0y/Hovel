@@ -38,7 +38,7 @@ namespace Hovel
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
+			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
 			return ss.str();
 		}
 		EVENT_CLASS_TYPE(MouseScrolled)
@@ -52,7 +52,8 @@ namespace Hovel
 	{
 	
 	public:
-		inline int GetButton() { return m_Button; }
+		inline int GetMouseButton() const { return m_Button; }
+
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	
 	protected:
