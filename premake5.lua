@@ -18,12 +18,13 @@ IncludeDir["ImGui"] = "Hovel/vendor/imgui"
 
 include "Hovel/vendor/GLFW"
 include "Hovel/vendor/Glad"
-include "Hovel/vendor/ImGui"
+include "Hovel/vendor/imgui"
 
 project "Hovel"
-    location "Hovel"
-    kind "SharedLib"
-    language "C++"
+	location "Hovel"
+	kind "SharedLib"
+	language "C++"
+	staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -56,7 +57,7 @@ project "Hovel"
 
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "On"
+
         systemversion "latest"
 
         defines 
@@ -66,31 +67,32 @@ project "Hovel"
 			"GLFW_INCLUDE_NONE"
         }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-        }
-    
-    filter "configurations:Debug"
-        defines "HV_DEBUG"
-        buildoptions "/MDd"
-        symbols "On"
+		postbuildcommands
+		{
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+		}
 
-    filter "configurations:Release"
-        defines "HV_RELEASE"
-        buildoptions "/MD"
-        optimize "On"
+	filter "configurations:Debug"
+		defines "HV_DEBUG"
+		runtime "Debug"
+		symbols "On"
 
-    filter "configurations:Dist"
-        defines "HV_DIST"
-        buildoptions "/MD"
-        optimize "On"
+	filter "configurations:Release"
+		defines "HZ_RELEASE"
+		runtime "Release"
+		optimize "On"
+
+	filter "configurations:Dist"
+		defines "HZ_DIST"
+		runtime "Release"
+		optimize "On"
 
 
 project "Sandbox"
-    location "Sandbox"
-    kind "ConsoleApp"
-    language "C++"
+	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -113,7 +115,7 @@ project "Sandbox"
     }
     filter "system:windows"
         cppdialect "C++17"
-        staticruntime "On"
+
         systemversion "latest"
 
         defines 
@@ -121,17 +123,17 @@ project "Sandbox"
             "HV_PLATFORM_WINDOWS"
         }
 
-    filter "configurations:Debug"
-        defines "HV_DEBUG"
-        buildoptions "/MDd"
-        symbols "On"
+	filter "configurations:Debug"
+		defines "HV_DEBUG"
+		runtime "Debug"
+		symbols "On"
 
-    filter "configurations:Release"
-        defines "HV_RELEASE"
-        buildoptions "/MD"
-        optimize "On"
+	filter "configurations:Release"
+		defines "HV_RELEASE"
+		runtime "Release"
+		optimize "On"
 
-    filter "configurations:Dist"
-        defines "HV_DIST"
-        buildoptions "/MD"
-        optimize "On"
+	filter "configurations:Dist"
+		defines "HV_DIST"
+		runtime "Release"
+		optimize "On"
