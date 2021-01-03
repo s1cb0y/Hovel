@@ -5,6 +5,8 @@
 
 #include "glad/glad.h"
 
+#include "Input.h"
+
 namespace Hovel {
 	
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -44,6 +46,8 @@ namespace Hovel {
 			for (Layer* layer : m_layerStack)
 				layer->OnUpdate();
 			
+			auto[x, y] = Input::GetMousePosition();
+			HV_CORE_TRACE("Xpos : {0} , YPos : {1}", x, y);
 			m_Window->OnUpdate();
 		}
 	}
