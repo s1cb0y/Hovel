@@ -15,6 +15,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Hovel/vendor/GLFW/include"
 IncludeDir["Glad"] = "Hovel/vendor/Glad/include"
 IncludeDir["ImGui"] = "Hovel/vendor/imgui"
+IncludeDir["glm"] = "Hovel/vendor/glm"
 
 include "Hovel/vendor/GLFW"
 include "Hovel/vendor/Glad"
@@ -35,7 +36,9 @@ project "Hovel"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
     }
 
     includedirs
@@ -44,7 +47,8 @@ project "Hovel"
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}"
     } 
 
     links
@@ -106,7 +110,8 @@ project "Sandbox"
     includedirs
     {
         "Hovel/vendor/spdlog/include",
-        "Hovel/src"
+        "Hovel/src",
+		"%{IncludeDir.glm}"
     } 
 
     links

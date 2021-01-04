@@ -10,3 +10,6 @@
 [submodule ".\\Hovel\\vendor\\imgui"]
 	path = .\\Hovel\\vendor\\imgui
 	url = https://github.com/TheCherno/imgui
+[submodule ".\\Hovel\\vendor\\glm"]
+	path = .\\Hovel\\vendor\\glm
+	url = https://github.com/g-truc/glm
