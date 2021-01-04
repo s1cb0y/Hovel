@@ -111,6 +111,7 @@ project "Sandbox"
     {
         "Hovel/vendor/spdlog/include",
         "Hovel/src",
+		"Hovel/vendor",
 		"%{IncludeDir.glm}"
     } 
 

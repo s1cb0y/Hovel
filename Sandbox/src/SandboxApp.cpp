@@ -1,5 +1,7 @@
 #include <Hovel.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Hovel::Layer
 {
 public:
@@ -14,6 +16,12 @@ public:
 		//HV_INFO("ExampleLayer::Update");
 	}
 
+	void OnImGuiRender()
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Helloworld");
+		ImGui::End();
+	}
 	void OnEvent(Hovel::Event& e) override
 	{	
 		HV_TRACE("ExampleLayer, {0}", e.GetName());
@@ -25,7 +33,6 @@ public:
 	Sandbox() 
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Hovel::ImGuiLayer());
 	}
 
 	~Sandbox()

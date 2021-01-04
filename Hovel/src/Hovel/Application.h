@@ -6,6 +6,8 @@
 #include "Hovel/Events/Event.h"
 #include "Hovel/Events/ApplicationEvent.h"
 
+#include "Hovel/ImGui/ImGuiLayer.h"
+
 namespace Hovel {
 	class HOVEL_API Application
 	{
@@ -27,6 +29,7 @@ namespace Hovel {
 
 		bool m_Running = true;
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
 
 	private:
