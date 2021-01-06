@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef HV_PLATFORM_WINDOWS
+#if HV_DYNAMIC_LINK
 	#ifdef HV_BUILD_DLL
 		#define HOVEL_API __declspec(dllexport)
 	#else
 		#define HOVEL_API __declspec(dllimport)
 	#endif
+#else
+	#define HOVEL_API
+#endif
 #else
 	#error Hovel only supports windows!
 #endif 
