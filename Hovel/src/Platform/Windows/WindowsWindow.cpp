@@ -5,7 +5,7 @@
 #include "Hovel/Events/KeyEvent.h"
 #include "Hovel/Events/ApplicationEvent.h"
 
-#include "glad/glad.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Hovel
 {
@@ -36,6 +36,8 @@ namespace Hovel
 		m_Data.Width	= props.Width;
 
 		HV_CORE_INFO("Creating window {0} ({1} {2})", props.Title, props.Width, props.Height);
+		
+
 		if (!s_GLFWInitialized)
 		{
 			// TODO: glfwTerminate on system shutdown
@@ -46,10 +48,9 @@ namespace Hovel
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		// Init glad
-		int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-		HV_ASSERT(status, "Failed to init Glad!");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
+				
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 	
 		SetVSync(true);
@@ -153,7 +154,8 @@ namespace Hovel
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
+		
 	}
 	void WindowsWindow::SetVSync(bool enabled)
 	{

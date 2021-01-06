@@ -1,6 +1,8 @@
 #pragma once
 #include "Hovel/Window.h"
-#include "GLFW/glfw3.h"
+#include "Hovel/Renderer/GraphicsContext.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Hovel 
 {
@@ -28,6 +30,7 @@ namespace Hovel
 	private:
 
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		unsigned int m_Width;
 		unsigned int m_Height;
