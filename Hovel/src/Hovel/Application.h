@@ -32,6 +32,7 @@ namespace Hovel {
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
 
+		unsigned int m_IndexBuffer, m_VertexBuffer, m_VertexArray;
 	private:
 		static Application* s_Instance;
 	};

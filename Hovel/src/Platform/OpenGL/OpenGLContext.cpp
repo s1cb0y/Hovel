@@ -17,6 +17,10 @@ namespace Hovel{
 		// Init glad
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		HV_ASSERT(status, "Failed to init Glad!");
+
+		HV_CORE_INFO("VERSION: {0}", glGetString(GL_VERSION));
+		HV_CORE_INFO("VENDOR: {0}", glGetString(GL_VENDOR));
+		HV_CORE_INFO("RENDERER: {0}", glGetString(GL_RENDERER));
 	}
 	void OpenGLContext::SwapBuffers()
 	{
