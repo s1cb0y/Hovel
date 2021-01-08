@@ -24,7 +24,7 @@ public:
 	}
 	void OnEvent(Hovel::Event& e) override
 	{	
-		HV_TRACE("ExampleLayer, {0}", e.GetName());
+		//HV_TRACE("ExampleLayer, {0}", e.GetName());
 	}
 };
 

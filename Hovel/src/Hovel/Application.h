@@ -8,6 +8,8 @@
 
 #include "Hovel/ImGui/ImGuiLayer.h"
 
+#include "Hovel/Renderer/Shader.h"
+
 namespace Hovel {
 	class HOVEL_API Application
 	{
@@ -33,6 +35,7 @@ namespace Hovel {
 		LayerStack m_layerStack;
 
 		unsigned int m_IndexBuffer, m_VertexBuffer, m_VertexArray;
+		std::unique_ptr<Shader> m_Shader;
 	private:
 		static Application* s_Instance;
 	};
