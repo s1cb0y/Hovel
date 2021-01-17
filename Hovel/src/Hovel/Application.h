@@ -10,6 +10,7 @@
 
 #include "Hovel/Renderer/Shader.h"
 #include "Hovel/Renderer/Buffer.h"
+#include "Hovel/Renderer/VertexArray.h"
 
 namespace Hovel {
 	class HOVEL_API Application
@@ -35,12 +36,12 @@ namespace Hovel {
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<Shader> m_ShaderBlueSquare;
+		std::shared_ptr<VertexArray> m_VertexArrayBlueSquare;
 	private:
 		static Application* s_Instance;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	};
 
 	// To be defined by CLIENT

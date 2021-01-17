@@ -13,25 +13,7 @@ namespace Hovel {
 
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-			case Hovel::ShaderDataType::Float:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Float2:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Float3:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Float4:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Int:    return GL_INT;
-			case Hovel::ShaderDataType::Int2:   return GL_INT;
-			case Hovel::ShaderDataType::Int3:   return GL_INT;
-			case Hovel::ShaderDataType::Int4:	return GL_INT;
-			case Hovel::ShaderDataType::Mat3:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Mat4:	return GL_FLOAT;
-			case Hovel::ShaderDataType::Bool:	return GL_BOOL;
-		}
-		HV_ASSERT(false, "Unkown ShaderDataType!");
-		return 0;
-	}
+	
 	Application::Application() 
 	{
 		HV_CORE_ASSERT(!s_Instance , "Application already exists");
@@ -42,10 +24,8 @@ namespace Hovel {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		// Generate Vertex Array
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-		
+		m_VertexArray.reset(VertexArray::Create());
+
 		float vertices[3 * 7] =
 		{
 			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
@@ -53,32 +33,40 @@ namespace Hovel {
 			 0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
 		};
 		// Generate Vertex Buffer
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-		{
-			BufferLayout bufferLayout = {
-				{ ShaderDataType::Float3, "a_Position"},
-				{ ShaderDataType::Float4, "a_Color"}
-			};
-
-			m_VertexBuffer->SetLayout(bufferLayout);
-		}
-		uint32_t index = 0;
-		for (const auto& element : m_VertexBuffer->GetLayout())
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-								  element.GetComponentCount(), 
-								  ShaderDataTypeToOpenGLBaseType(element.Type), 
-								  element.Normalized ? GL_TRUE : GL_FALSE, 
-								  m_VertexBuffer->GetLayout().GetStride(),
-								  (const void*) element.Offset);
-			index++;
-		}
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		
+		vertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position"},
+			{ ShaderDataType::Float4, "a_Color"} });
+		
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
+
 		// Generate Index Buffer
 		unsigned int indices[3] = { 0, 1, 2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_VertexArray->SetIndexBuffer(indexBuffer);
+
+		float verticesSquare[3 * 4] =
+		{
+			-0.5f, -0.5f, 0.0f, 
+			 0.5f, -0.5f, 0.0f, 
+			 0.5f,  0.5f, 0.0f,
+			 -0.5f, 0.5f, 0.0f
+		};
+
+		m_VertexArrayBlueSquare.reset(VertexArray::Create());
+		vertexBuffer.reset(VertexBuffer::Create(verticesSquare, sizeof(verticesSquare)));
+		vertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position"}	});
+
+		m_VertexArrayBlueSquare->AddVertexBuffer(vertexBuffer);
 		
+		unsigned int indicesSquare[6] = { 0, 1, 2, 2, 3, 0};
+		indexBuffer.reset(IndexBuffer::Create(indicesSquare, sizeof(indicesSquare) / sizeof(uint32_t)));
+		m_VertexArrayBlueSquare->SetIndexBuffer(indexBuffer);
+
 		std::string vertexSrc = R"(
 		#version 330 core
 
@@ -109,6 +97,31 @@ namespace Hovel {
 		)";
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
 
+		std::string vertexBlueSquareSrc = R"(
+		#version 330 core
+
+		layout(location = 0) in vec3 a_Position;
+		out vec3 v_Position;
+
+		void main()
+		{
+			v_Position = a_Position;
+			gl_Position = vec4(a_Position, 1.0);
+		}
+		)";
+
+		std::string fragmentBlueSquareSrc = R"(
+		#version 330 core
+
+		layout(location = 0) out vec4 color;
+		in vec3 v_Position;
+		void main()
+		{
+			color = vec4(0.2, 0.2, 0.8, 1.0);
+		}
+		)";
+		m_ShaderBlueSquare.reset(new Shader(vertexBlueSquareSrc, fragmentBlueSquareSrc));
+
 	}
 	Application::~Application()	
 	{
@@ -133,9 +146,16 @@ namespace Hovel {
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_ShaderBlueSquare->Bind();
+			m_VertexArrayBlueSquare->Bind();
+
+			glDrawElements(GL_TRIANGLES, m_VertexArrayBlueSquare->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Bind();
+
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			for (Layer* layer : m_layerStack)
 				layer->OnUpdate();
 			
