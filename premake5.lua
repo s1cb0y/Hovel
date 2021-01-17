@@ -17,9 +17,12 @@ IncludeDir["Glad"] = "Hovel/vendor/Glad/include"
 IncludeDir["ImGui"] = "Hovel/vendor/imgui"
 IncludeDir["glm"] = "Hovel/vendor/glm"
 
-include "Hovel/vendor/GLFW"
-include "Hovel/vendor/Glad"
-include "Hovel/vendor/imgui"
+group "Dependencies"
+    include "Hovel/vendor/GLFW"
+    include "Hovel/vendor/Glad"
+    include "Hovel/vendor/imgui"
+
+group ""
 
 project "Hovel"
 	location "Hovel"
