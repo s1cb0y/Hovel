@@ -2,6 +2,16 @@
 #include "Renderer.h"
 
 namespace Hovel{
-
-	RendererAPI Renderer::s_rendererAPI = RendererAPI::OpenGL;
+	
+	void Renderer::BeginScene()
+	{
+	}
+	void Renderer::EndScene()
+	{
+	}
+	void Renderer::Submit(std::shared_ptr<VertexArray>& vertexArray)
+	{
+		vertexArray->Bind();
+		RenderCommand::DrawIndexed(vertexArray);
+	}
 }

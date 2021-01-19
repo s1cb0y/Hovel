@@ -1,20 +1,16 @@
 #pragma once
-
+#include "RenderCommand.h"
 namespace Hovel {
-
-	enum class RendererAPI
-	{
-		None = 0,
-		OpenGL
-	};
-
+		
 	class Renderer
 	{
 	public:
-		inline static RendererAPI GetAPI() { return s_rendererAPI; }
+		static void BeginScene();
+		static void EndScene();
 
-	private:
-		static RendererAPI s_rendererAPI;
+		static void Submit(std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }			
 	};
 
 }

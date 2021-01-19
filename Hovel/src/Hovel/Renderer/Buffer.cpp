@@ -3,14 +3,15 @@
 
 #include "Hovel/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
+
 namespace Hovel{
 
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
-			case RendererAPI::OpenGL: return new OpenGLVertexBuffer(vertices, size);
+			case RendererAPI::API::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL: return new OpenGLVertexBuffer(vertices, size);
 		}
 
 		HV_ASSERT(false, "Unknown Renderer API!");
@@ -21,8 +22,8 @@ namespace Hovel{
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
-			case RendererAPI::OpenGL: return new OpenGLIndexBuffer(indices, count);
+			case RendererAPI::API::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(indices, count);
 		}
 
 		HV_ASSERT(false, "Unknown Renderer API!");

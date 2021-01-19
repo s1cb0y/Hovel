@@ -9,8 +9,8 @@ namespace Hovel {
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
-			case RendererAPI::OpenGL: return new OpenGLVertexArray();
+			case RendererAPI::API::None: HV_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL: return new OpenGLVertexArray();
 		}
 
 		HV_ASSERT(false, "Unknown Renderer API!");
