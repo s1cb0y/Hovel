@@ -11,6 +11,7 @@
 #include "Hovel/Renderer/Shader.h"
 #include "Hovel/Renderer/Buffer.h"
 #include "Hovel/Renderer/VertexArray.h"
+#include "Hovel/Renderer/OrthoGraphCamera.h"
 
 namespace Hovel {
 	class HOVEL_API Application
@@ -35,11 +36,11 @@ namespace Hovel {
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
+						
+		std::shared_ptr<Shader> m_ShaderCube;
+		std::shared_ptr<VertexArray> m_VACube;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<Shader> m_ShaderBlueSquare;
-		std::shared_ptr<VertexArray> m_VertexArrayBlueSquare;
+		OrthoGraphCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};

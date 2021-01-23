@@ -2,7 +2,7 @@
 #include "Shader.h"
 
 #include "glad/glad.h"
-
+#include "glm/gtc/type_ptr.hpp"
 namespace HOVEL {
 
 
@@ -127,4 +127,10 @@ void Hovel::Shader::Bind()
 void Hovel::Shader::Unbind()
 {
 	glUseProgram(0);
+}
+
+void Hovel::Shader::UploadUniform(const std::string& name, const glm::mat4& matrix)
+{
+	GLint MatrixID = glGetUniformLocation(m_RendererId, name.c_str());
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, glm::value_ptr(matrix));
 }

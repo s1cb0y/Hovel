@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include "glm/glm.hpp"
 namespace Hovel {
 	class Shader
 	{
@@ -11,6 +11,8 @@ namespace Hovel {
 
 		void Bind();
 		void Unbind();
+
+		void UploadUniform(const std::string& name, const glm::mat4& matrix);
 
 	private:
 		uint32_t m_RendererId;
