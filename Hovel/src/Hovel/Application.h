@@ -31,16 +31,12 @@ namespace Hovel {
 	private:
 
 		bool OnWindowClose(WindowCloseEvent& e);
-
+		bool SetCameraOrientation(KeyPressedEvent& e);
 		bool m_Running = true;
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
-						
-		std::shared_ptr<Shader> m_ShaderCube;
-		std::shared_ptr<VertexArray> m_VACube;
 
-		OrthoGraphCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};
