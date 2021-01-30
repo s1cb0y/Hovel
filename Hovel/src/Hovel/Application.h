@@ -7,6 +7,7 @@
 #include "Hovel/Events/ApplicationEvent.h"
 
 #include "Hovel/ImGui/ImGuiLayer.h"
+#include "Hovel/Core/TimeStep.h"
 
 #include "Hovel/Renderer/Shader.h"
 #include "Hovel/Renderer/Buffer.h"

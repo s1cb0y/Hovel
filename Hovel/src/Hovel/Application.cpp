@@ -6,8 +6,10 @@
 #include "Hovel/Renderer/Renderer.h"
 
 #include "Input.h"
-
 #include "KeyCodes.h"
+
+#include "GLFW/glfw3.h" // TODO only temporary till platform "TIME" class is implemented
+
 namespace Hovel {
 	
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -43,10 +45,15 @@ namespace Hovel {
 	void Application::Run() {	
 		
 		HV_CORE_INFO("Run application");
+		float lastTime = 0.0f;
 		while (m_Running)
-		{			
+		{		
+			float currentTime = (float) glfwGetTime();
+			TimeStep timeStep = currentTime - lastTime;
+			lastTime = currentTime;
+
 			for (Layer* layer : m_layerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timeStep);
 			
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)

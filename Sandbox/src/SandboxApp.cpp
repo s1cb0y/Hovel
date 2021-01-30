@@ -77,23 +77,22 @@ public:
 	{
 	}
 	
-	void OnUpdate() override
+	void OnUpdate(Hovel::TimeStep ts) override
 	{		
-		glm::vec3 pos = m_Camera.GetPosition();
-		glm::vec3 newpos = pos + glm::vec3{ 0.25f, 0.0f, 0.0f };
+		HV_INFO("TimeStep {}s, {}ms", ts.GetSeconds(), ts.GetMilliseconds());
 		if (Hovel::Input::IsKeyPressed(HV_KEY_LEFT))
-			m_CameraPosition.x += m_CameraSpeed;		
+			m_CameraPosition.x += m_CameraSpeed * ts;		
 		else if (Hovel::Input::IsKeyPressed(HV_KEY_RIGHT))
-			m_CameraPosition.x -= m_CameraSpeed;
+			m_CameraPosition.x -= m_CameraSpeed * ts;
 		if (Hovel::Input::IsKeyPressed(HV_KEY_UP))
-			m_CameraPosition.y -= m_CameraSpeed;
+			m_CameraPosition.y -= m_CameraSpeed * ts;
 		else if (Hovel::Input::IsKeyPressed(HV_KEY_DOWN))
-			m_CameraPosition.y += m_CameraSpeed;
+			m_CameraPosition.y += m_CameraSpeed * ts;
 		m_Camera.SetPosition(m_CameraPosition);
 		if (Hovel::Input::IsKeyPressed(HV_KEY_A))
-			m_CameraRotation += m_RotationSpeed;
+			m_CameraRotation += m_RotationSpeed * ts;
 		else if (Hovel::Input::IsKeyPressed(HV_KEY_D))
-			m_CameraRotation -= m_RotationSpeed;
+			m_CameraRotation -= m_RotationSpeed * ts;
 		
 		m_Camera.SetPosition(m_CameraPosition);
 		m_Camera.SetRotation(m_CameraRotation);
@@ -121,10 +120,10 @@ private:
 	std::shared_ptr<Hovel::VertexArray> m_VACube;
 	Hovel::OrthoGraphCamera m_Camera;
 
-	const float m_CameraSpeed = 0.01f;
 	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-	const float m_RotationSpeed = 0.1f;
 	float m_CameraRotation = 0.0f;
+	const float m_CameraSpeed = 1.00f;
+	const float m_RotationSpeed = 15.0f;
 };
 
 class Sandbox : public Hovel::Application {
