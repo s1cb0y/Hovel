@@ -1,15 +1,16 @@
-[submodule "sic_engine/vendor/spdlog"]
-	path = sic_engine/vendor/spdlog
-	url = https://github.com/gabime/spdlog
 [submodule "Hovel/vendor/spdlog"]
 	path = Hovel/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+    branch = v1.x
 [submodule "Hovel/vendor/GLFW"]
 	path = Hovel/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
-[submodule ".\\Hovel\\vendor\\imgui"]
-	path = .\\Hovel\\vendor\\imgui
+    branch = master
+[submodule "Hovel/vendor/imgui"]
+	path = Hovel/vendor/imgui
 	url = https://github.com/TheCherno/imgui
-[submodule ".\\Hovel\\vendor\\glm"]
-	path = .\\Hovel\\vendor\\glm
+    branch = docking
+[submodule "Hovel/vendor/glm"]
+	path = Hovel/vendor/glm
 	url = https://github.com/g-truc/glm
+    branch = master
