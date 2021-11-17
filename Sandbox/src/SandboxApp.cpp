@@ -1,6 +1,7 @@
 #include <Hovel.h>
 
 #include "imgui/imgui.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 class ExampleLayer : public Hovel::Layer
 {
@@ -17,23 +18,14 @@ public:
 		// Create 3D cube
 
 		float cubeVertices[] = {
-		  -0.5f,0.5f,0.0f,
-		  -0.5f,-0.5f,0.0f,
-		  0.5f,0.5f,0.0f,
-		  0.5f,-0.5f,0.0f,
-		  -0.5f,0.5f,-0.5f,
-		  -0.5f,-0.5f,-0.5f,
-		  0.5f,0.5f,-0.5f,
-		  0.5f,-0.5f,-0.5f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		uint32_t cubeIndices[] = {
-			  0, 2, 3, 1,
-			  2, 6, 7, 3,
-			  6, 4, 5, 7,
-			  4, 0, 1, 5,
-			  0, 4, 6, 2,
-			  1, 5, 7, 3
+			 0, 1, 2, 2, 3, 0
 		};
 
 		m_VACube.reset(Hovel::VertexArray::Create());
@@ -50,12 +42,14 @@ public:
 
 		layout(location = 0) in vec3 a_Position;
 		uniform mat4 u_ViewProjection;
+		uniform mat4 u_Transform;
+
 		out vec3 v_Position;
 
 		void main()
 		{
 			v_Position = a_Position;
-			gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 		}
 		)";
 
@@ -69,7 +63,7 @@ public:
 			color = vec4(0.2, 0.2, 0.8, 1.0);
 		}
 		)";
-		m_ShaderCube.reset(new Hovel::Shader(vertexBlueSquareSrc, fragmentBlueSquareSrc));
+		m_ShaderSquare.reset(new Hovel::Shader(vertexBlueSquareSrc, fragmentBlueSquareSrc));
 
 	}
 
@@ -102,7 +96,14 @@ public:
 
 		Hovel::Renderer::BeginScene(m_Camera);
 
-		Hovel::Renderer::Submit(m_VACube, m_ShaderCube);
+		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1));
+		for (int i = 0; i < 5; i++)
+		{
+			position.x += 0.11;
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
+			Hovel::Renderer::Submit(m_VACube, m_ShaderSquare, transform);
+		}
 
 		Hovel::Renderer::EndScene();
 	}
@@ -116,7 +117,7 @@ public:
 	}
 
 private:
-	std::shared_ptr<Hovel::Shader> m_ShaderCube;
+	std::shared_ptr<Hovel::Shader> m_ShaderSquare;
 	std::shared_ptr<Hovel::VertexArray> m_VACube;
 	Hovel::OrthoGraphCamera m_Camera;
 

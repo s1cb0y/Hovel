@@ -12,7 +12,7 @@ namespace Hovel
 		float GetSeconds() { return m_TimeStep; }
 		float GetMilliseconds() { return m_TimeStep * 1000; }
 
-		operator float() { return m_TimeStep; }
+		operator float() const { return m_TimeStep; }
 	private:
 		float m_TimeStep;
 	};

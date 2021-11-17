@@ -48,7 +48,7 @@ namespace Hovel {
 		float lastTime = 0.0f;
 		while (m_Running)
 		{		
-			float currentTime = (float) glfwGetTime();
+			float currentTime = (float) glfwGetTime(); //TODO Platform::GetTime()
 			TimeStep timeStep = currentTime - lastTime;
 			lastTime = currentTime;
 
