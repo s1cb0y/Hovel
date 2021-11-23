@@ -1,22 +1,17 @@
 #pragma once
 
 #include <string>
-#include "glm/glm.hpp"
+
 namespace Hovel {
 	class Shader
 	{
-	public:
-		Shader(std::string vertexSrc, std::string fragmentSrc);
-		~Shader();
+	public:		
+		virtual ~Shader() = default;
 
-		void Bind();
-		void Unbind();
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-		void UploadUniform(const std::string& name, const glm::mat4& matrix);
-
-	private:
-		uint32_t m_RendererId;
-	
+		static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);	
 	};
 
 }

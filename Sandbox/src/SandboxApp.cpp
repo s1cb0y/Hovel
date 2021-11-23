@@ -1,5 +1,7 @@
 #include <Hovel.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -58,12 +60,13 @@ public:
 
 		layout(location = 0) out vec4 color;
 		in vec3 v_Position;
+		uniform vec4 u_Color;
 		void main()
 		{
-			color = vec4(0.2, 0.2, 0.8, 1.0);
+			color = u_Color;
 		}
 		)";
-		m_ShaderSquare.reset(new Hovel::Shader(vertexBlueSquareSrc, fragmentBlueSquareSrc));
+		m_ShaderSquare.reset(Hovel::Shader::Create(vertexBlueSquareSrc, fragmentBlueSquareSrc));
 
 	}
 
@@ -96,12 +99,22 @@ public:
 
 		Hovel::Renderer::BeginScene(m_Camera);
 
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1));
 		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1));
+		
+		glm::vec4 color_blue(0.2f, 0.2f, 0.8f, 1.0f);
+		glm::vec4 color_red(0.8f, 0.1f, 0.3f, 1.0f);
+
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->Bind();
+
 		for (int i = 0; i < 5; i++)
 		{
 			position.x += 0.11;
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
+			if (i % 2 == 0)
+				std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat4("u_Color", color_blue);
+			else
+				std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat4("u_Color", color_red);
 			Hovel::Renderer::Submit(m_VACube, m_ShaderSquare, transform);
 		}
 
