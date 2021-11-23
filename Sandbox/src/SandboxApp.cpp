@@ -4,6 +4,7 @@
 
 #include "imgui/imgui.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class ExampleLayer : public Hovel::Layer
 {
@@ -60,10 +61,10 @@ public:
 
 		layout(location = 0) out vec4 color;
 		in vec3 v_Position;
-		uniform vec4 u_Color;
+		uniform vec3 u_Color;
 		void main()
 		{
-			color = u_Color;
+			color = vec4(u_Color, 1.0);
 		}
 		)";
 		m_ShaderSquare.reset(Hovel::Shader::Create(vertexBlueSquareSrc, fragmentBlueSquareSrc));
@@ -102,19 +103,14 @@ public:
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1));
 		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 		
-		glm::vec4 color_blue(0.2f, 0.2f, 0.8f, 1.0f);
-		glm::vec4 color_red(0.8f, 0.1f, 0.3f, 1.0f);
 
 		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->Bind();
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat3("u_Color", m_SquareColor);
 
 		for (int i = 0; i < 5; i++)
 		{
 			position.x += 0.11;
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
-			if (i % 2 == 0)
-				std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat4("u_Color", color_blue);
-			else
-				std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_ShaderSquare)->UploadUniformFloat4("u_Color", color_red);
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;			
 			Hovel::Renderer::Submit(m_VACube, m_ShaderSquare, transform);
 		}
 
@@ -123,6 +119,9 @@ public:
 
 	void OnImGuiRender()
 	{
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("SquareColor", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	
 	}
 	void OnEvent(Hovel::Event& e) override
@@ -138,6 +137,8 @@ private:
 	float m_CameraRotation = 0.0f;
 	const float m_CameraSpeed = 1.00f;
 	const float m_RotationSpeed = 15.0f;
+
+	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f};
 };
 
 class Sandbox : public Hovel::Application {
