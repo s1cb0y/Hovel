@@ -15,8 +15,8 @@ public:
 
 
 		// Generate Vertex Buffer
-		std::shared_ptr<Hovel::VertexBuffer> vertexBuffer;
-		std::shared_ptr<Hovel::IndexBuffer> indexBuffer;
+		Hovel::Ref<Hovel::VertexBuffer> vertexBuffer;
+		Hovel::Ref<Hovel::IndexBuffer> indexBuffer;
 
 		// Create 3D cube
 
@@ -129,8 +129,8 @@ public:
 	}
 
 private:
-	std::shared_ptr<Hovel::Shader> m_ShaderSquare;
-	std::shared_ptr<Hovel::VertexArray> m_VACube;
+	Hovel::Ref<Hovel::Shader> m_ShaderSquare;
+	Hovel::Ref<Hovel::VertexArray> m_VACube;
 	Hovel::OrthoGraphCamera m_Camera;
 
 	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
