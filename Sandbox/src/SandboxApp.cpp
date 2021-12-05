@@ -19,12 +19,12 @@ public:
 		Hovel::Ref<Hovel::IndexBuffer> indexBuffer;
 
 		// Create 3D cube
-
-		float cubeVertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float cubeVertices[5 * 4] = {
+			// positions         // texture coords
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,   // bottom left 
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,   // top left 
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,   // top right
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f    // bottom right 
 		};
 
 		uint32_t cubeIndices[] = {
@@ -34,7 +34,9 @@ public:
 		m_VACube.reset(Hovel::VertexArray::Create());
 
 		vertexBuffer.reset(Hovel::VertexBuffer::Create(cubeVertices, sizeof(cubeVertices)));
-		vertexBuffer->SetLayout({ { Hovel::ShaderDataType::Float3, "a_Position" } });
+		vertexBuffer->SetLayout({ { Hovel::ShaderDataType::Float3, "a_Position" },
+								  { Hovel::ShaderDataType::Float2, "a_TexCoord" } 
+		});		
 		m_VACube->AddVertexBuffer(vertexBuffer);
 		indexBuffer.reset(Hovel::IndexBuffer::Create(cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t)));
 		m_VACube->SetIndexBuffer(indexBuffer);
@@ -67,7 +69,46 @@ public:
 			color = vec4(u_Color, 1.0);
 		}
 		)";
+
 		m_ShaderSquare.reset(Hovel::Shader::Create(vertexBlueSquareSrc, fragmentBlueSquareSrc));
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+		out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+		#version 330 core
+
+		layout(location = 0) out vec4 color;
+		
+		in vec2 v_TexCoord;
+		uniform sampler2D u_Texture;
+		void main()
+		{
+			color = texture(u_Texture, v_TexCoord);
+		}
+		)";
+
+		m_TextureShader.reset(Hovel::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		m_Texture = Hovel::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 
 	}
 
@@ -113,11 +154,13 @@ public:
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;			
 			Hovel::Renderer::Submit(m_VACube, m_ShaderSquare, transform);
 		}
-
+		
+		m_Texture->Bind();
+		Hovel::Renderer::Submit(m_VACube, m_TextureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		Hovel::Renderer::EndScene();
 	}
 
-	void OnImGuiRender()
+	virtual void OnImGuiRender() override
 	{
 		ImGui::Begin("Settings");
 		ImGui::ColorEdit3("SquareColor", glm::value_ptr(m_SquareColor));
@@ -129,7 +172,7 @@ public:
 	}
 
 private:
-	Hovel::Ref<Hovel::Shader> m_ShaderSquare;
+	Hovel::Ref<Hovel::Shader> m_ShaderSquare, m_TextureShader;
 	Hovel::Ref<Hovel::VertexArray> m_VACube;
 	Hovel::OrthoGraphCamera m_Camera;
 
@@ -139,6 +182,7 @@ private:
 	const float m_RotationSpeed = 15.0f;
 
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f};
+	Hovel::Ref<Hovel::Texture2D> m_Texture;
 };
 
 class Sandbox : public Hovel::Application {

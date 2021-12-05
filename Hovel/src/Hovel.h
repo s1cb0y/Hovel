@@ -19,6 +19,7 @@
 #include "Hovel/Renderer/Buffer.h"
 #include "Hovel/Renderer/Shader.h"
 #include "Hovel/Renderer/VertexArray.h"
+#include "Hovel/Renderer/Texture.h"
 
 #include "Hovel/Renderer/OrthographCamera.h"
 // -----------------------------------
