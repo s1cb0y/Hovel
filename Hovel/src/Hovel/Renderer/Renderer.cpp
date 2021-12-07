@@ -6,6 +6,10 @@ namespace Hovel{
 
 	glm::mat4* Renderer::s_ViewProjMatrix = new glm::mat4;
 
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
 	void Renderer::BeginScene(OrthoGraphCamera& camera)
 	{
 		*s_ViewProjMatrix = camera.GetViewProjectionMatrix();

@@ -9,6 +9,8 @@ namespace Hovel {
 	class Renderer
 	{
 	public:
+		static void Init();
+
 		static void BeginScene(OrthoGraphCamera& camera);
 		static void EndScene();
 

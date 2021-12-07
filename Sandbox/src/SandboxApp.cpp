@@ -106,6 +106,7 @@ public:
 		m_TextureShader.reset(Hovel::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = Hovel::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoLogoTexture = Hovel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -157,6 +158,8 @@ public:
 		
 		m_Texture->Bind();
 		Hovel::Renderer::Submit(m_VACube, m_TextureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		m_ChernoLogoTexture->Bind();
+		Hovel::Renderer::Submit(m_VACube, m_TextureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		Hovel::Renderer::EndScene();
 	}
 
@@ -182,7 +185,7 @@ private:
 	const float m_RotationSpeed = 15.0f;
 
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f};
-	Hovel::Ref<Hovel::Texture2D> m_Texture;
+	Hovel::Ref<Hovel::Texture2D> m_Texture, m_ChernoLogoTexture;
 };
 
 class Sandbox : public Hovel::Application {
