@@ -70,15 +70,15 @@ public:
 		}
 		)";
 
-		m_ShaderSquare.reset(Hovel::Shader::Create(vertexBlueSquareSrc, fragmentBlueSquareSrc));
+		m_ShaderSquare = Hovel::Shader::Create("BlueShader", vertexBlueSquareSrc, fragmentBlueSquareSrc);
 
-		m_TextureShader.reset(Hovel::Shader::Create("assets/shaders/Texture.glsl"));
+ 		Hovel::Ref<Hovel::Shader> textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hovel::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Hovel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hovel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Hovel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
 	}
 
@@ -125,10 +125,11 @@ public:
 			Hovel::Renderer::Submit(m_VACube, m_ShaderSquare, transform);
 		}
 		
+		auto textureShader = m_ShaderLibrary.Get("Texture");
 		m_Texture->Bind();
-		Hovel::Renderer::Submit(m_VACube, m_TextureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hovel::Renderer::Submit(m_VACube, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernoLogoTexture->Bind();
-		Hovel::Renderer::Submit(m_VACube, m_TextureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hovel::Renderer::Submit(m_VACube, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		Hovel::Renderer::EndScene();
 	}
 
@@ -144,7 +145,8 @@ public:
 	}
 
 private:
-	Hovel::Ref<Hovel::Shader> m_ShaderSquare, m_TextureShader;
+	Hovel::ShaderLibrary m_ShaderLibrary;
+	Hovel::Ref<Hovel::Shader> m_ShaderSquare;
 	Hovel::Ref<Hovel::VertexArray> m_VACube;
 	Hovel::OrthoGraphCamera m_Camera;
 

@@ -11,8 +11,10 @@ namespace Hovel {
 	{
 	public:
 		OpenGLShader(const std::string& filepath);
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
+
+		virtual const std::string& GetName() const override { return m_Name; };
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
@@ -34,6 +36,7 @@ namespace Hovel {
 
 	private:
 		uint32_t m_RendererId;
+		std::string m_Name;
 
 	};
 
