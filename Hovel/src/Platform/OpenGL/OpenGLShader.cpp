@@ -41,7 +41,7 @@ namespace Hovel {
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
 		std::string s;
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		HV_CORE_ASSERT(in, "Could not open shader file {0}", filepath);
 		in.seekg(0, std::ios::end);
 		s.resize(in.tellg());
@@ -81,7 +81,9 @@ namespace Hovel {
 	{
 		
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		HV_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 different shaders!");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -111,7 +113,7 @@ namespace Hovel {
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		// Shaders are successfully compiled.
