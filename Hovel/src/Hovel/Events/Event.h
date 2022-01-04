@@ -46,20 +46,19 @@ namespace Hovel {
 	};
 
 	class EventDispatcher 
-	{
-		template<typename T>
-		using EventFn = std::function<bool(T&)>;
+	{		
 	public:
 		EventDispatcher(Event& e)
 			: m_Event( e ) {}
 		
-		template<typename T>
-		bool Dispatch(EventFn<T> func) 
+		// F will be deduced by the compiler
+		template<typename T, typename F>
+		bool Dispatch(const F& func)
 		{
 			if (m_Event.GetEventType() == T::GetStaticType()) 
 			{
-				m_Event.Handled = func(*(T*)&m_Event); // TODO: Understand this function call
-				return true;
+				m_Event.Handled = func(static_cast<T&>(m_Event));
+			    return true;
 			}
 			return false;
 		}
