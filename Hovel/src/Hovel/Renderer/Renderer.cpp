@@ -10,7 +10,7 @@ namespace Hovel{
 	{
 		RenderCommand::Init();
 	}
-	void Renderer::BeginScene(OrthoGraphCamera& camera)
+	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		*s_ViewProjMatrix = camera.GetViewProjectionMatrix();
 	}

@@ -11,6 +11,7 @@
 #include "Hovel/MouseButtonCodes.h"
 
 #include "Hovel/ImGui/ImGuiLayer.h"
+#include "Hovel/OrthographicCameraController.h"
 
 // ---Renderer------------------------
 #include "Hovel/Renderer/Renderer.h"
@@ -21,7 +22,7 @@
 #include "Hovel/Renderer/VertexArray.h"
 #include "Hovel/Renderer/Texture.h"
 
-#include "Hovel/Renderer/OrthographCamera.h"
+#include "Hovel/Renderer/OrthoGraphCamera.h"
 // -----------------------------------
 
 // ---Entry Point---------------------
