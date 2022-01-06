@@ -39,6 +39,7 @@ namespace Hovel {
 	{		
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));		
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));		
 		for (auto it = m_layerStack.end(); it != m_layerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
@@ -55,15 +56,18 @@ namespace Hovel {
 			float currentTime = (float) glfwGetTime(); //TODO Platform::GetTime()
 			TimeStep timeStep = currentTime - lastTime;
 			lastTime = currentTime;
-
-			for (Layer* layer : m_layerStack)
-				layer->OnUpdate(timeStep);
 			
+			if (!m_Minimized)
+			{
+				for (Layer* layer : m_layerStack)
+					layer->OnUpdate(timeStep);			
+			}						
+
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
-						
+
 			m_Window->OnUpdate();
 		}
 	}
@@ -89,5 +93,18 @@ namespace Hovel {
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e) 
+	{
+		if (e.GetHeight() == 0 || e.GetWidth() == 0)
+		{
+			m_Minimized = true;
+		}
+		else
+		{
+			m_Minimized = false;
+		}
+		return false;
 	}
 }

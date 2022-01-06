@@ -32,8 +32,10 @@ namespace Hovel {
 	private:
 
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 		bool SetCameraOrientation(KeyPressedEvent& e);
 		bool m_Running = true;
+		bool m_Minimized = false;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_layerStack;
